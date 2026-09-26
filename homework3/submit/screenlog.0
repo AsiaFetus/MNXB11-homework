@@ -1,0 +1,99 @@
+cd ~/git/Mn[KNXB11-homework/homework3/submit/[K[K[K[K[K[K[KcalculatePI/scripts/
+[?2004lkgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ cat ./run_in_container_calculatePI.sh 
+[?2004l#!/bin/sh
+# This script runs the calculatePI.sh script using the container `mnxb11_al9.latest.sif` with minimum required parameters
+# -B mounts the project directory inside the container so that is visible also inside the container
+apptainer run -B /projects:/projects /projects/hep/fs11/share/mnxb11/containers/mnxb11_al9.latest.sif ./calculatePI_setup.sh
+
+
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ cat cacl[K[Klculatepi.sbatch-gorg.sh 
+[?2004l#!/bin/sh
+
+#SBATCH -J "MNXB11 Pi homework"
+#SBATCH --time=00:09:00
+#SBATCH -A hep2023-1-6
+#SBATCH --mem 32G
+
+# Launch the calculatePI.sh application script using the container script
+run_in_container_calculatePI.sh
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ sbatcjh[K[Kh calculatepi.sbatch-gorg.sh 
+[?2004lSubmitted batch job 3736303
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ squeue -u gorg
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3736303       hep MNXB11 P     gorg  R       0:03      1 cx13
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ sinfo
+[?2004lPARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+nuc          up 7-00:00:00      1 drain* nuc80
+nuc          up 7-00:00:00     95   idle nuc[01-79,81-96]
+lu48*        up 7-00:00:00      2   plnd cn[081,099]
+lu48*        up 7-00:00:00      1  drain cn284
+lu48*        up 7-00:00:00     40    mix cn[001,004,009-010,015,018,021,027,035,039-041,060,065,067,071,074,086,089,092-093,098,102,107,109,111-112,115-116,121-124,134-135,150,153,177,179-180]
+lu48*        up 7-00:00:00    142  alloc cn[002-003,005-008,011-014,016-017,019-020,022-026,028-034,036-038,042-059,061-064,066,068-070,072-073,075-080,082-085,087-088,090-091,094-097,100-101,103-106,108,110,113-114,117-120,125-133,136-149,151-152,154-165,167-176,178,181-182],cx[01-03]
+lu48*        up 7-00:00:00      1   idle cn166
+hep          up 5-00:00:00      1    mix cx13
+hep          up 5-00:00:00      1  alloc cx12
+hep          up 5-00:00:00     10   idle cx[04-11,14-15]
+gpua40       up 1-00:00:00      2    mix cg[01-02]
+gpua40       up 1-00:00:00      4   idle cg[03-06]
+hpua40       up 1-00:00:00      2    mix cg[01-02]
+hpua40       up 1-00:00:00      4   idle cg[03-06]
+gpua40i      up 2-00:00:00      1    mix cg14
+gpua40i      up 2-00:00:00      5   idle cg[13,15-17,23]
+hpua40i      up 2-00:00:00      1    mix cg14
+hpua40i      up 2-00:00:00      5   idle cg[13,15-17,23]
+gpua100      up 7-00:00:00      5  alloc cg[07-11]
+gpua100      up 7-00:00:00      1   idle cg12
+gpua100i     up 7-00:00:00      4    mix cg[18-21]
+aurora       up 7-00:00:00     18   resv ca[01-18]
+aurora       up 7-00:00:00      4   idle ca[19-22]
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ scontrol show job 3736303
+[?2004lJobId=3736303 JobName=MNXB11 Pi homework
+   UserId=gorg(400239) GroupId=gorg(400239) MCS_label=N/A
+   Priority=63798 Nice=0 Account=hep2023-1-6 QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:00:48 TimeLimit=00:09:00 TimeMin=N/A
+   SubmitTime=2026-09-26T14:58:15 EligibleTime=2026-09-26T14:58:15
+   AccrueTime=2026-09-26T14:58:15
+   StartTime=2026-09-26T14:58:16 EndTime=2026-09-26T15:07:16 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-09-26T14:58:16 Scheduler=Main
+   Partition=hep AllocNode:Sid=cosmos-pkf:2492024
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=cx13
+   BatchHost=cx13
+   NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=1,mem=32G,node=1,billing=1
+   AllocTRES=cpu=1,mem=32G,node=1,billing=1
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryNode=32G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/home/gorg/git/MNXB11-homework/homework3/calculatePI/scripts/calculatepi.sbatch-gorg.sh
+   WorkDir=/home/gorg/git/MNXB11-homework/homework3/calculatePI/scripts
+   StdErr=/home/gorg/git/MNXB11-homework/homework3/calculatePI/scripts/slurm-3736303.out
+   StdIn=/dev/null
+   StdOut=/home/gorg/git/MNXB11-homework/homework3/calculatePI/scripts/slurm-3736303.out
+   Power=
+   
+
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ scontrol show job 3736303info[Kqueue -u gorgbatch calculatepi.sbatch-gorg.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7@./run_in_container_calculatePI[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd ~/git/MNXB11-homework/homework3/calculatePI/scripts/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[17Pat ./run_in_container_calculatePI.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7Pcalculatepi.sbatch-gorg[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[20Pqueue -u gorginfo[Kcontrol show job 3736303[Kscontrol show job 3736303info[Kqueue -u gorgbatch calculatepi.sbatch-gorg.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7@./run_in_container_calculatePI[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd ~/git/MNXB11-homework/homework3/calculatePI/scripts/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[17Pat ./run_in_container_calculatePI.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7Pcalculatepi.sbatch-gorg[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[20Pqueue -u gorginfo[Kcontrol show job 3736303[Kscontrol show job 3736303info[Kqueue -u gorgbatch calculatepi.sbatch-gorg.sh [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[7@./run_in_container_calculatePI[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd ~/git/MNXB11-homework/homework3/calculatePI/scripts/[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Ksbatch Was[K[KASTED.sh 
+[?2004lSubmitted batch job 3736304
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ sbatch WASTED.sh 
+[?2004lSubmitted batch job 3736305
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ squeue -yu[Ku[K[Ku gorg
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3736305       hep   WASTED     gorg  R       0:07      1 cx13
+           3736304       hep   WASTED     gorg  R       0:10      1 cx13
+           3736303       hep MNXB11 P     gorg  R       1:31      1 cx13
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ s cance[K[K[K[K[K[Kcancel [K[K[K[K[K[Kan[K[K[K[Kscancel373[K[K[K 3736305
+[?2004lkgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ scancel 3736305[K4
+[?2004lkgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ squeue -u gorg
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3736303       hep MNXB11 P     gorg  R       2:24      1 cx13
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ squeue -u gorg
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3736303       hep MNXB11 P     gorg  R       4:30      1 cx13
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ squeue -u gorg
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+kgorg@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[gorg@cosmos-pkf scripts]$ exit
+[?2004lexit
